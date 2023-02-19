@@ -6,83 +6,98 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
 
+    //Singleton instance of this controller. Multiples will glitch the system.
+    public static GameController Instance { get; private set; }
+
     public List<Transform> twoByFourLayout;
     public List<Transform> fourByFourLayout;
     public List<Transform> sixBySixLayout;
+
     public StandardDeck deck;
+
+    //For match attempts
+    private Card selectedCard1, selectedCard2;
 
     // Start is called before the first frame update
     void Start()
     {
+        Instance = this;
         deck = new StandardDeck(); // example of composition
-        uiController = FindObjectOfType<UIController>();
-        audioController = FindObjectOfType<AudioController>();
     }
 
+    //Delay variable to wait for timer
+    public bool beingDelayed = false;
 
-    private UIController uiController;
-    public AudioController audioController;
-    private Card sel1, sel2;
-    public bool IsDelayed;
-    private int tries = 0;
-    public int max_tries = 3;
-    public int matches = 0;
-    public int max_matches = 0;
+    //Fail logic and win logic counters
+    private int currentFails = 0, maxFails = 3;
+    public int currentMatches = 0, maxMatches = 0;
 
     public void SelectCard(Card c)
     {
-        if (sel1 == null)
+        if (selectedCard1 == null)
         {
-            sel1 = c;
+            selectedCard1 = c;
         }
         else
         {
-            sel2 = c;
+            selectedCard2 = c;
             CheckMatch();
         }
-
     }
 
     public void CheckMatch()
     {
-        if (sel1.gameObject.name == sel2.gameObject.name)
+        if (selectedCard1.gameObject.name == selectedCard2.gameObject.name)
         {
-            sel1.isMatched = true;
-            sel2.isMatched = true;
-            sel1 = null;
-            sel2 = null;
-            matches++;
-            audioController.PlaySound(CLIPS.MATCH);
-            if (matches >= max_matches)
+            //deselect the cards, we found a match!
+            selectedCard1 = null;
+            selectedCard2 = null;
+
+            //Add one to the score
+            currentMatches++;
+
+            //Play match stcore
+            AudioController.Instance.PlaySound(CLIPS.MATCH);
+
+            //Check for win
+            if (currentMatches >= maxMatches)
             {
-                IsDelayed = true;
-                uiController.SetWinLoss(true);
+                beingDelayed = true;
+                UIController.Instance.SetOutcome(true);
             }
-            uiController.UpdateMatches();
+
+            //Update score UI;
+            UIController.Instance.UpdateScoreUI();
         }
         else
         {
-            IsDelayed = true;
-            tries++;
-            if (tries >= max_tries)
+            //Set being delayed, this will allow 3 seconds for the user to see the cards.
+            beingDelayed = true;
+
+            //Add one to current fails and check if we are over the maximum
+            currentFails++;
+            if (currentFails >= maxFails)
             {
-                uiController.SetWinLoss(false);
-                IsDelayed = true;
-                tries = 0;
+                UIController.Instance.SetOutcome(false);
+                beingDelayed = true;
+                currentFails = 0;
             }
             else
             {
-                audioController.PlaySound(CLIPS.MFAIL);
-                Invoke("Reflip", 3);
+                //Tell the player they flipped wrong and wait 3 seconds to flip them back.
+                AudioController.Instance.PlaySound(CLIPS.MFAIL);
+                Invoke("waitReset", 3);
             }
         }
     }
-    public void Reflip()
+    //This flips all cards back, resets all selected cards, and turns off the delay
+    //This invoke was learned in a previous project. It is NOT external code.
+    public void waitReset()
     {
-        sel1.Flip();
-        sel2.Flip();
-        sel1 = null;
-        sel2 = null;
-        IsDelayed = false;
+        selectedCard1.Flip();
+        selectedCard2.Flip();
+        selectedCard1 = null;
+        selectedCard2 = null;
+        beingDelayed = false;
     }
 }

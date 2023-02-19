@@ -7,20 +7,29 @@ using UnityEngine;
 
 public class UIController : MonoBehaviour
 {
+    //Singleton instance of this controller. Multiples will glitch the system.
+    public static UIController Instance { get; private set; }
+
+    //UI Stuff from in-class excersize 
     public TMP_Dropdown difficultyDropdown;
     public Difficulty difficulty;
-    public GameController gameController;
     public Transform cardParent;
     public GameObject startButton;
+
+    //Text objects for outcome and score.
+    private TMP_Text outcomeText;
+    private TMP_Text scoreText;
 
     // Start is called before the first frame update
     void Start()
     {
-        gameController = GetComponent<GameController>();
+        Instance = this;
         difficultyDropdown = FindObjectOfType<TMP_Dropdown>();
         difficulty = Difficulty.EASY;
         cardParent = GameObject.Find("[CARDS]").transform;
-        MyInit();
+
+        //Setup my UI extensions
+        SetupExtraUI();
     }
 
     public void OnDifficulty_Changed()
@@ -30,46 +39,51 @@ public class UIController : MonoBehaviour
 
     public void OnStartButton_Pressed()
     {
-        
+        //Play shuffle sound.
+        AudioController.Instance.PlaySound(CLIPS.SHUFFLE);
+
+        //Reset match score
+        GameController.Instance.currentMatches = 0; //Set score to 0;
+
+        //Setup difficulty.
         switch (difficulty)
         {
             case Difficulty.EASY: 
-                Deal(gameController.twoByFourLayout, 8);
-                gameController.max_matches = 4;
-                gameController.matches = 0;
+                Deal(GameController.Instance.twoByFourLayout, 8);
+                GameController.Instance.maxMatches = GameController.Instance.twoByFourLayout.Count / 2;
                 break;
             case Difficulty.NORMAL:
-                Deal(gameController.fourByFourLayout, 16);
-                gameController.max_matches = 8;
-                gameController.matches = 0;
+                Deal(GameController.Instance.fourByFourLayout, 16);
+                GameController.Instance.maxMatches = GameController.Instance.fourByFourLayout.Count / 2;
                 break;
             case Difficulty.HARD:
-                Deal(gameController.sixBySixLayout, 36);
-                gameController.max_matches = 18;
-                gameController.matches = 0;
+                Deal(GameController.Instance.sixBySixLayout, 36);
+                GameController.Instance.maxMatches = GameController.Instance.sixBySixLayout.Count / 2;
                 break;
         }
-
         startButton.SetActive(false);
-        UpdateMatches();
-        gameController.audioController.PlaySound(CLIPS.SHUFFLE);
+
+        //Update Match Text
+        UpdateScoreUI();
     }
 
     public void OnResetButton_Pressed()
     {
-        gameController.deck.Clean();
+        GameController.Instance.deck.Clean();
 
         foreach (Transform child in cardParent)
         {
             Destroy(child.gameObject);
         }
 
-        gameController.deck.Initialize();
-        gameController.IsDelayed = false;
+        GameController.Instance.deck.Initialize();
+        GameController.Instance.beingDelayed = false;
 
         startButton.SetActive(true);
 
-        winloss.gameObject.SetActive(false);
+        outcomeText.gameObject.SetActive(false);
+
+        scoreText.gameObject.SetActive(false);
     }
 
     private void Deal(List<Transform> layout, int cardNumber)
@@ -87,7 +101,7 @@ public class UIController : MonoBehaviour
         {
             if (i == 0 || i % 2 == 0)
             {
-                var firstCard = gameController.deck.Pop();
+                var firstCard = GameController.Instance.deck.Pop();
                 firstCard.SetActive(true);
                 firstCard.GetComponent<Card>().Flip();
                 var secondCard = Instantiate(firstCard);
@@ -98,35 +112,34 @@ public class UIController : MonoBehaviour
         }
     }
 
-    private TMP_Text winloss;
-    private TMP_Text matches;
 
-    private void MyInit()
+    private void SetupExtraUI()
     {
-        winloss = GameObject.Find("WLL").GetComponent<TMP_Text>();
-        winloss.gameObject.SetActive(false);
-        matches = GameObject.Find("Progress").GetComponent<TMP_Text>();
-        matches.gameObject.SetActive(false);
+        outcomeText = GameObject.Find("WLL").GetComponent<TMP_Text>();
+        outcomeText.gameObject.SetActive(false);
+
+        scoreText = GameObject.Find("Progress").GetComponent<TMP_Text>();
+        scoreText.gameObject.SetActive(false);
     }
 
-    public void UpdateMatches()
+    public void UpdateScoreUI()
     {
-        matches.text = "" + gameController.matches + " of " + gameController.max_matches + " matches!";
-        matches.gameObject.SetActive(true);
+        scoreText.text = "" + GameController.Instance.currentMatches + " of " + GameController.Instance.maxMatches + " matches!";
+        scoreText.gameObject.SetActive(true);
     }
 
-    public void SetWinLoss(bool won) 
+    public void SetOutcome(bool hasWon) 
     {
-        if(won)
+        if(hasWon)
         {
-            winloss.text = "You've won!";
-            gameController.audioController.PlaySound(CLIPS.WIN);
+            outcomeText.text = "Winner!";
+            AudioController.Instance.PlaySound(CLIPS.WIN);
         }
         else
         {
-            winloss.text = "You've lost!";
-            gameController.audioController.PlaySound(CLIPS.LOSE);
+            outcomeText.text = "Lost Match.";
+            AudioController.Instance.PlaySound(CLIPS.LOSE);
         }
-        winloss.gameObject.SetActive(true);
+        outcomeText.gameObject.SetActive(true);
     }
 }

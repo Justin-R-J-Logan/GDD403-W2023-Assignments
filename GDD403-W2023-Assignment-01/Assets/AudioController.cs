@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class AudioController : MonoBehaviour
 {
+    //Singleton instance of this controller. Multiples will glitch the system.
+    public static AudioController Instance;
+
     public AudioClip win;
     public AudioClip lose;
     public AudioClip shuffle;
@@ -14,6 +17,7 @@ public class AudioController : MonoBehaviour
 
     public void Start()
     {
+        Instance = this;
         source = GetComponent<AudioSource>();
     }
 

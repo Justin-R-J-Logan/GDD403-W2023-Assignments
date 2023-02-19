@@ -17,13 +17,7 @@ public class Card : MonoBehaviour
     public SelectionOutline selectionOutline;
     public Color selectionColour;
 
-    private bool startFacing;
     private Renderer cRenderer;
-
-    private GameController gameController;
-    private UIController userInterfaceController;
-    [Header("Game Properties")]
-    public bool isMatched;
 
     void Start()
     {
@@ -52,9 +46,6 @@ public class Card : MonoBehaviour
 
     private void Initialize()
     {
-        gameController = FindObjectOfType<GameController>();
-        userInterfaceController = FindObjectOfType<UIController>();
-
         //Remove "(Clone)" so the rank names function properly.
         if (this.gameObject.name.Contains("("))
         {
@@ -95,8 +86,6 @@ public class Card : MonoBehaviour
         }
 
         rankName = numberWords[value];
-
-        startFacing = isFaceUp;
     }
 
     void OnMouseEnter()
@@ -106,13 +95,10 @@ public class Card : MonoBehaviour
 
     void OnMouseOver()
     {
-        if (Input.GetMouseButtonDown(0) && !isMatched)
+        if (Input.GetMouseButtonDown(0) && !isSelected && !GameController.Instance.beingDelayed)
         {
-            if(!gameController.IsDelayed)
-            {
-                Flip();
-                gameController.SelectCard(this);
-            }
+            Flip();
+            GameController.Instance.SelectCard(this);
         }
     }
 
