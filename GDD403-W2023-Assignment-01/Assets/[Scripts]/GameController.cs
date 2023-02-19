@@ -16,10 +16,12 @@ public class GameController : MonoBehaviour
     {
         deck = new StandardDeck(); // example of composition
         uiController = FindObjectOfType<UIController>();
+        audioController = FindObjectOfType<AudioController>();
     }
 
 
     private UIController uiController;
+    public AudioController audioController;
     private Card sel1, sel2;
     public bool IsDelayed;
     private int tries = 0;
@@ -50,7 +52,8 @@ public class GameController : MonoBehaviour
             sel1 = null;
             sel2 = null;
             matches++;
-            if(matches >= max_matches)
+            audioController.PlaySound(CLIPS.MATCH);
+            if (matches >= max_matches)
             {
                 IsDelayed = true;
                 uiController.SetWinLoss(true);
@@ -69,6 +72,7 @@ public class GameController : MonoBehaviour
             }
             else
             {
+                audioController.PlaySound(CLIPS.MFAIL);
                 Invoke("Reflip", 3);
             }
         }

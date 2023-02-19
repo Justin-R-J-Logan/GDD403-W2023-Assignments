@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -51,6 +52,7 @@ public class UIController : MonoBehaviour
 
         startButton.SetActive(false);
         UpdateMatches();
+        gameController.audioController.PlaySound(CLIPS.SHUFFLE);
     }
 
     public void OnResetButton_Pressed()
@@ -118,10 +120,12 @@ public class UIController : MonoBehaviour
         if(won)
         {
             winloss.text = "You've won!";
+            gameController.audioController.PlaySound(CLIPS.WIN);
         }
         else
         {
             winloss.text = "You've lost!";
+            gameController.audioController.PlaySound(CLIPS.LOSE);
         }
         winloss.gameObject.SetActive(true);
     }

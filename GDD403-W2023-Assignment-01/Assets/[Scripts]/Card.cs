@@ -18,7 +18,7 @@ public class Card : MonoBehaviour
     public Color selectionColour;
 
     private bool startFacing;
-    private Renderer renderer;
+    private Renderer cRenderer;
 
     private GameController gameController;
     private UIController userInterfaceController;
@@ -28,13 +28,13 @@ public class Card : MonoBehaviour
     void Start()
     {
         selectionOutline = FindObjectOfType<SelectionOutline>();
-        renderer = GetComponent<Renderer>();
+        cRenderer = GetComponent<Renderer>();
         Initialize();
     }
 
     private void Update()
     {
-        renderer.material.SetColor("_Color", isSelected ? selectionColour : Color.white);
+        cRenderer.material.SetColor("_Color", isSelected ? selectionColour : Color.white);
     }
 
     public void Flip()
@@ -56,9 +56,9 @@ public class Card : MonoBehaviour
         userInterfaceController = FindObjectOfType<UIController>();
 
         //Remove "(Clone)" so the rank names function properly.
-        if (this.gameObject.name.Contains("(Clone)"))
+        if (this.gameObject.name.Contains("("))
         {
-            this.gameObject.name = this.gameObject.name.Split("(")[0];
+            this.gameObject.name = this.gameObject.name.Substring(0, this.gameObject.name.IndexOf("("));
         }
 
         isSelected = false;
