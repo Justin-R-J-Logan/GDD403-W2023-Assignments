@@ -98,7 +98,7 @@ public class Card : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && !isSelected && !GameController.Instance.beingDelayed)
         {
             Flip();
-            GameController.Instance.SelectCard(this);
+            GameController.Instance.SelectCard(this.gameObject);
         }
     }
 

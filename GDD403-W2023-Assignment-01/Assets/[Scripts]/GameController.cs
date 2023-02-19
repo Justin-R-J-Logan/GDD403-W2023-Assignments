@@ -16,7 +16,7 @@ public class GameController : MonoBehaviour
     public StandardDeck deck;
 
     //For match attempts
-    private Card selectedCard1, selectedCard2;
+    private GameObject selectedCard1, selectedCard2;
 
     // Start is called before the first frame update
     void Start()
@@ -32,22 +32,22 @@ public class GameController : MonoBehaviour
     public int currentFails = 0, maxFails = 3;
     public int currentMatches = 0, maxMatches = 0;
 
-    public void SelectCard(Card c)
+    public void SelectCard(GameObject cardGameObject)
     {
         if (selectedCard1 == null)
         {
-            selectedCard1 = c;
+            selectedCard1 = cardGameObject;
         }
         else
         {
-            selectedCard2 = c;
+            selectedCard2 = cardGameObject;
             CheckMatch();
         }
     }
 
     public void CheckMatch()
     {
-        if (selectedCard1.gameObject.name == selectedCard2.gameObject.name)
+        if (selectedCard1.name == selectedCard2.name)
         {
             //deselect the cards, we found a match!
             selectedCard1 = null;
@@ -93,8 +93,8 @@ public class GameController : MonoBehaviour
     //This flips all cards back, resets all selected cards, and turns off the delay
     public void waitReset()
     {
-        selectedCard1.Flip();
-        selectedCard2.Flip();
+        selectedCard1.GetComponent<Card>().Flip();
+        selectedCard2.GetComponent<Card>().Flip();
         selectedCard1 = null;
         selectedCard2 = null;
         beingDelayed = false;
