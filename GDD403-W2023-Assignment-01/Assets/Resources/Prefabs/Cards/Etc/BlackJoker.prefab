@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 2300000}
   - component: {fileID: 6132215479793075768}
   - component: {fileID: 1467645716120843888}
-  - component: {fileID: 6332651946258285368}
   m_Layer: 0
   m_Name: BlackJoker
   m_TagString: Untagged
@@ -134,20 +133,3 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.062328134, y: 0.00005505397, z: 0.08706154}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6332651946258285368
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 100000}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c12fc04706e452448d5640c50772583, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rankName: 
-  suit: 
-  value: 0
-  isFaceUp: 0
-  startFacing: 0
