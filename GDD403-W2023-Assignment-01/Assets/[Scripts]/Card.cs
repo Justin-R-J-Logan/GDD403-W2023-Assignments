@@ -12,12 +12,18 @@ public class Card : MonoBehaviour
     public bool isFaceUp;
     public bool isSelected;
 
+
     [Header("Selection Properties")]
     public SelectionOutline selectionOutline;
     public Color selectionColour;
 
     private bool startFacing;
     private Renderer renderer;
+
+    private GameController gameController;
+    private UIController userInterfaceController;
+    [Header("Game Properties")]
+    public bool isMatched;
 
     void Start()
     {
@@ -39,13 +45,22 @@ public class Card : MonoBehaviour
         isSelected = isFaceUp;
     }
 
-    string toString()
+    public string toString()
     {
         return $"{rankName} of {suit}s";
     }
 
     private void Initialize()
     {
+        gameController = FindObjectOfType<GameController>();
+        userInterfaceController = FindObjectOfType<UIController>();
+
+        //Remove "(Clone)" so the rank names function properly.
+        if (this.gameObject.name.Contains("(Clone)"))
+        {
+            this.gameObject.name = this.gameObject.name.Split("(")[0];
+        }
+
         isSelected = false;
         isFaceUp = false;
 
@@ -91,9 +106,13 @@ public class Card : MonoBehaviour
 
     void OnMouseOver()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !isMatched)
         {
-            Flip();
+            if(!gameController.IsDelayed)
+            {
+                Flip();
+                gameController.SelectCard(this);
+            }
         }
     }
 

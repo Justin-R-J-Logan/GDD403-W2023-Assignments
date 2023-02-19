@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing.Printing;
+using System.Linq;
 using UnityEngine;
 
 public class StandardDeck : Stack<GameObject>
@@ -92,5 +93,37 @@ public class StandardDeck : Stack<GameObject>
                 (_cardPrefabs[i], _cardPrefabs[randomIndex]) = (_cardPrefabs[randomIndex], _cardPrefabs[i]);
             }
         }
+    }
+
+    //Get Remaining Cards
+    public int CardsRemaining()
+    {
+        return Count;
+    }
+    //Draw card at slot [0]
+    public GameObject DrawNextCard()
+    {
+        return DrawSpecific(0);
+    }
+
+    //Draw Random card
+    public GameObject DrawRandomCard()
+    {
+        int index = Random.Range(0, this.Count);
+        return DrawSpecific(index);
+    }
+
+    //Draw specific - makes the top two methods use less code
+    public GameObject DrawSpecific(int index)
+    {
+        List<GameObject> cards = this.ToList();
+        GameObject card = cards[index];
+        cards.RemoveAt(0);
+        this.Clear();
+        foreach (GameObject c in cards)
+        {
+            this.Push(c);
+        }
+        return card;
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.Animations;
 using UnityEngine;
 
 public class UIController : MonoBehaviour
@@ -18,6 +19,7 @@ public class UIController : MonoBehaviour
         difficultyDropdown = FindObjectOfType<TMP_Dropdown>();
         difficulty = Difficulty.EASY;
         cardParent = GameObject.Find("[CARDS]").transform;
+        MyInit();
     }
 
     public void OnDifficulty_Changed()
@@ -32,16 +34,23 @@ public class UIController : MonoBehaviour
         {
             case Difficulty.EASY: 
                 Deal(gameController.twoByFourLayout, 8);
+                gameController.max_matches = 4;
+                gameController.matches = 0;
                 break;
             case Difficulty.NORMAL:
                 Deal(gameController.fourByFourLayout, 16);
+                gameController.max_matches = 8;
+                gameController.matches = 0;
                 break;
             case Difficulty.HARD:
                 Deal(gameController.sixBySixLayout, 36);
+                gameController.max_matches = 18;
+                gameController.matches = 0;
                 break;
         }
 
         startButton.SetActive(false);
+        UpdateMatches();
     }
 
     public void OnResetButton_Pressed()
@@ -54,8 +63,11 @@ public class UIController : MonoBehaviour
         }
 
         gameController.deck.Initialize();
+        gameController.IsDelayed = false;
 
         startButton.SetActive(true);
+
+        winloss.gameObject.SetActive(false);
     }
 
     private void Deal(List<Transform> layout, int cardNumber)
@@ -82,5 +94,35 @@ public class UIController : MonoBehaviour
                 secondCard.transform.position = layout[i + 1].position;
             }
         }
+    }
+
+    private TMP_Text winloss;
+    private TMP_Text matches;
+
+    private void MyInit()
+    {
+        winloss = GameObject.Find("WLL").GetComponent<TMP_Text>();
+        winloss.gameObject.SetActive(false);
+        matches = GameObject.Find("Progress").GetComponent<TMP_Text>();
+        matches.gameObject.SetActive(false);
+    }
+
+    public void UpdateMatches()
+    {
+        matches.text = "" + gameController.matches + " of " + gameController.max_matches + " matches!";
+        matches.gameObject.SetActive(true);
+    }
+
+    public void SetWinLoss(bool won) 
+    {
+        if(won)
+        {
+            winloss.text = "You've won!";
+        }
+        else
+        {
+            winloss.text = "You've lost!";
+        }
+        winloss.gameObject.SetActive(true);
     }
 }
