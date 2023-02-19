@@ -1580,6 +1580,66 @@ Transform:
   m_Father: {fileID: 2132231063}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &708449018
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 708449021}
+  - component: {fileID: 708449020}
+  - component: {fileID: 708449019}
+  m_Layer: 0
+  m_Name: VisualScripting SceneVariables
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &708449019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 708449018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 765181c9ef4b24d32a4f7cbd2ef370dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &708449020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 708449018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e741851cba3ad425c91ecf922cc6b379, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _data:
+    _json: '{"declarations":{"Kind":"Scene","collection":{"$content":[],"$version":"A"},"$version":"A"}}'
+    _objectReferences: []
+--- !u!4 &708449021
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 708449018}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &814750191
 GameObject:
   m_ObjectHideFlags: 0
@@ -2300,10 +2360,11 @@ MonoBehaviour:
   - {fileID: 1556225643}
   - {fileID: 95246915}
   - {fileID: 1890875069}
-  IsDelayed: 0
-  max_tries: 3
-  matches: 0
-  max_matches: 0
+  beingDelayed: 0
+  currentFails: 0
+  maxFails: 3
+  currentMatches: 0
+  maxMatches: 0
 --- !u!114 &1193699990
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2318,7 +2379,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   difficultyDropdown: {fileID: 0}
   difficulty: 0
-  gameController: {fileID: 0}
   cardParent: {fileID: 0}
   startButton: {fileID: 203770753}
 --- !u!82 &1193699991
@@ -2429,11 +2489,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 813faed66b8bff44aaed92948503dc4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  win: {fileID: 8300000, guid: 1732aec772add8d47a71185d0eede663, type: 3}
-  lose: {fileID: 8300000, guid: d9b955b31a4fad44a8f227e2052a1135, type: 3}
-  shuffle: {fileID: 8300000, guid: 625f7a0096bdd7b408231e393157024f, type: 3}
-  match: {fileID: 8300000, guid: eda3e148dd41ebe46a16d36df725defc, type: 3}
-  matchfail: {fileID: 8300000, guid: 0c799d2024c2a7048acb5dfd7cd23ee7, type: 3}
+  clips:
+  - {fileID: 8300000, guid: 1732aec772add8d47a71185d0eede663, type: 3}
+  - {fileID: 8300000, guid: d9b955b31a4fad44a8f227e2052a1135, type: 3}
+  - {fileID: 8300000, guid: 625f7a0096bdd7b408231e393157024f, type: 3}
+  - {fileID: 8300000, guid: eda3e148dd41ebe46a16d36df725defc, type: 3}
+  - {fileID: 8300000, guid: 0c799d2024c2a7048acb5dfd7cd23ee7, type: 3}
 --- !u!1 &1250275311
 GameObject:
   m_ObjectHideFlags: 0

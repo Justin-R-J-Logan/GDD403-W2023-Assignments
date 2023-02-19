@@ -43,7 +43,8 @@ public class UIController : MonoBehaviour
         AudioController.Instance.PlaySound(CLIPS.SHUFFLE);
 
         //Reset match score
-        GameController.Instance.currentMatches = 0; //Set score to 0;
+        GameController.Instance.currentMatches = 0;
+        GameController.Instance.currentFails = 0; 
 
         //Setup difficulty.
         switch (difficulty)
@@ -128,6 +129,7 @@ public class UIController : MonoBehaviour
         scoreText.gameObject.SetActive(true);
     }
 
+    //Shows win loss text and plays relevant sound.
     public void SetOutcome(bool hasWon) 
     {
         if(hasWon)

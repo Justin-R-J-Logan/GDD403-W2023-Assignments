@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class AudioController : MonoBehaviour
@@ -7,41 +9,26 @@ public class AudioController : MonoBehaviour
     //Singleton instance of this controller. Multiples will glitch the system.
     public static AudioController Instance;
 
-    public AudioClip win;
-    public AudioClip lose;
-    public AudioClip shuffle;
-    public AudioClip match;
-    public AudioClip matchfail;
-
+    //Audio Clips and Source
+    public AudioClip[] clips;
     private AudioSource source;
 
     public void Start()
     {
         Instance = this;
         source = GetComponent<AudioSource>();
+
+        //Find automagic load this somehow later if need be
+        //clips = new AudioClips[5];
+        //
+        //clips[(int)CLIPS.WIN] = Resources.Load<AudioClip>("Path To Clip");
+        //The above code didn't work, leaving example incase I can get working later.
     }
 
+    //Plays selected audio clips
     public void PlaySound(CLIPS c)
     {
-        switch(c)
-        {
-            case CLIPS.WIN:
-                source.clip = win;
-                break;
-            case CLIPS.LOSE:
-                source.clip = lose;
-                break;
-            case CLIPS.SHUFFLE:
-                source.clip = shuffle;
-                break;
-            case CLIPS.MATCH:
-                source.clip = match;
-                break;
-            case CLIPS.MFAIL:
-                source.clip = matchfail;
-                break;
-
-        }
+        source.clip = clips[(int)c];
         source.Play();
     }
 }
@@ -52,5 +39,5 @@ public enum CLIPS
     LOSE = 1,
     SHUFFLE = 2,
     MATCH = 3,
-    MFAIL = 4,
+    MATCH_FAIL = 4,
 }
