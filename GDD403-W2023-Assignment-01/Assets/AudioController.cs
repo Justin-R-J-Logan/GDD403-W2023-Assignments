@@ -33,6 +33,7 @@ public class AudioController : MonoBehaviour
     }
 }
 
+//Enum of all sounds in game.
 public enum CLIPS
 {
     WIN = 0,

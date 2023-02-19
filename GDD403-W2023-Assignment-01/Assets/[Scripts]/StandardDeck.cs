@@ -116,14 +116,20 @@ public class StandardDeck : Stack<GameObject>
     //Draw specific - makes the top two methods use less code
     public GameObject DrawSpecific(int index)
     {
-        List<GameObject> cards = this.ToList();
-        GameObject card = cards[index];
-        cards.RemoveAt(0);
+        //Make list of cards
+        List<GameObject> listOfCards = this.ToList();
+        //Get the card we want
+        GameObject card = listOfCards[index];
+        //Remove that card
+        listOfCards.RemoveAt(0);
+        //Clear stack
         this.Clear();
-        foreach (GameObject c in cards)
+        //Add all back to stack
+        foreach (GameObject c in listOfCards)
         {
             this.Push(c);
         }
+        //Return selected card;
         return card;
     }
 }

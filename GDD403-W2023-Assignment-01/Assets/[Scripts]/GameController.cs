@@ -41,11 +41,11 @@ public class GameController : MonoBehaviour
         else
         {
             selectedCard2 = cardGameObject;
-            CheckMatch();
+            CheckChosenForMatch();
         }
     }
 
-    public void CheckMatch()
+    public void CheckChosenForMatch()
     {
         if (selectedCard1.name == selectedCard2.name)
         {
@@ -56,7 +56,7 @@ public class GameController : MonoBehaviour
             //Add one to the score
             currentMatches++;
 
-            //Play match stcore
+            //Play match sfx
             AudioController.Instance.PlaySound(CLIPS.MATCH);
 
             //Check for win

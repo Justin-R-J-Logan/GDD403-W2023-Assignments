@@ -46,7 +46,8 @@ public class Card : MonoBehaviour
 
     private void Initialize()
     {
-        //Remove "(Clone)" so the rank names function properly.
+        //Remove "(Clone)". 
+        //For some reason when spawned in they have clone and this breaks the split
         if (this.gameObject.name.Contains("("))
         {
             this.gameObject.name = this.gameObject.name.Substring(0, this.gameObject.name.IndexOf("("));
